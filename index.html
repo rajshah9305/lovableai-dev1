@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Creative Studio - Lovable × Claude</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        function generateResearchResponse(prompt, creativity) {
+            return `# AI Research Report\n\n**Research Query:** "${prompt}"\n**Analysis Depth:** ${creativity}/10\n\n## Executive Summary\n\nComprehensive research conducted using Claude AI's advanced reasoning capabilities, integrated seamlessly through Lovable.dev's platform architecture.\n\n## Key Findings\n\n### 🔍 **Primary Research Results**\n\n**Market Analysis:**\n• Industry growth rate: 23.7% annually\n• Market size: $847M globally\n• Key players: 12 major competitors identified\n• Emerging trends: 5 significant patterns\n\n**Technical Assessment:**\n• Innovation index: 8.9/10\n• Implementation complexity: Moderate\n• ROI projection: 340% over 24 months\n• Risk factors: 3 minor, 1 moderate\n\n### 📊 **Data Sources**\n\n• Academic papers: 47 relevant studies\n• Industry reports: 23 comprehensive analyses\n• Expert interviews: 15 thought leaders\n• Market data: Real-time metrics\n\n## Strategic Recommendations\n\n### Short-term (0-6 months)\n1. **Market Entry**: Focus on high-growth segments\n2. **Technology Stack**: Invest in AI-powered solutions\n3. **Partnership Strategy**: Collaborate with key players\n\n### Long-term (6-24 months)\n1. **Innovation Pipeline**: Develop proprietary technologies\n2. **Market Expansion**: International opportunities\n3. **Competitive Positioning**: Establish market leadership\n\n## Risk Assessment\n\n⚠️ **Medium Risk**: Technology disruption potential\n✅ **Low Risk**: Market acceptance high\n✅ **Low Risk**: Regulatory environment stable\n\n## Next Steps\n\n• **Phase 1**: Detailed feasibility study\n• **Phase 2**: Prototype development\n• **Phase 3**: Market validation\n• **Phase 4**: Full-scale implementation\n\n---\n**Research powered by Claude AI × Lovable.dev**\n*Analysis completed in ${(Math.random() * 3 + 2).toFixed(1)} seconds*`;
+        }
+
+        function generateSampleContent(prompt) {
+            const topics = {
+                'blog': 'In today\'s rapidly evolving digital landscape, the intersection of artificial intelligence and human creativity represents one of the most exciting frontiers in technology.',
+                'article': 'Recent developments in AI technology have revolutionized how we approach content creation, data analysis, and creative problem-solving.',
+                'marketing': 'Transform your business with cutting-edge AI solutions that deliver measurable results and exceptional user experiences.',
+                'technical': 'Advanced machine learning algorithms enable sophisticated pattern recognition and intelligent decision-making across multiple domains.'
+            };
+
+            for (let key in topics) {
+                if (prompt.toLowerCase().includes(key)) {
+                    return topics[key];
+                }
+            }
+            return 'This AI-generated content demonstrates the sophisticated natural language processing capabilities of modern AI systems, delivering human-like quality with remarkable efficiency.';
+        }
+
+        function displayResult(content, taskType) {
+            const outputArea = document.getElementById('output-area');
+            outputArea.innerHTML = `
+                <div class="result-content">
+                    <div class="result-header">
+                        <span class="task-badge ${taskType}">${taskType.charAt(0).toUpperCase() + taskType.slice(1)}</span>
+                        <span class="generation-time">${(Math.random() * 3 + 1).toFixed(1)}s</span>
+                    </div>
+                    <div class="result-text">${formatContent(content)}</div>
+                    <div class="result-actions">
+                        <button onclick="copyToClipboard('${btoa(content)}')" class="action-btn">📋 Copy</button>
+                        <button onclick="downloadResult('${btoa(content)}')" class="action-btn">💾 Download</button>
+                        <button onclick="shareResult()" class="action-btn">🔗 Share</button>
+                    </div>
+                </div>
+            `;
+
+            // Add CSS for result styling
+            if (!document.querySelector('#result-styles')) {
+                const style = document.createElement('style');
+                style.id = 'result-styles';
+                style.textContent = `
+                    .result-content {
+                        text-align: left;
+                        line-height: 1.6;
+                    }
+                    
+                    .result-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+                        padding-bottom: 1rem;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+                    
+                    .task-badge {
+                        background: var(--accent-gradient);
+                        color: white;
+                        padding: 0.3rem 0.8rem;
+                        border-radius: 15px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    
+                    .generation-time {
+                        color: var(--text-secondary);
+                        font-size: 0.9rem;
+                    }
+                    
+                    .result-text {
+                        white-space: pre-wrap;
+                        line-height: 1.8;
+                        color: var(--text-primary);
+                    }
+                    
+                    .result-text h1, .result-text h2, .result-text h3 {
+                        color: #4facfe;
+                        margin: 1.5rem 0 1rem 0;
+                    }
+                    
+                    .result-text code {
+                        background: rgba(79, 172, 254, 0.1);
+                        border: 1px solid rgba(79, 172, 254, 0.2);
+                        border-radius: 5px;
+                        padding: 1rem;
+                        display: block;
+                        margin: 1rem 0;
+                        overflow-x: auto;
+                        font-family: 'Courier New', monospace;
+                    }
+                    
+                    .result-actions {
+                        display: flex;
+                        gap: 1rem;
+                        margin-top: 2rem;
+                        padding-top: 1rem;
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        flex-wrap: wrap;
+                    }
+                    
+                    .action-btn {
+                        background: rgba(255, 255, 255, 0.1);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        color: var(--text-secondary);
+                        padding: 0.5rem 1rem;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .action-btn:hover {
+                        background: rgba(79, 172, 254, 0.2);
+                        border-color: #4facfe;
+                        color: var(--text-primary);
+                        transform: translateY(-2px);
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        function formatContent(content) {
+            // Convert markdown-style formatting to HTML
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/```([\s\S]*?)```/g, '<code>$1</code>')
+                .replace(/• /g, '• ')
+                .replace(/---/g, '<hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;">');
+        }
+
+        function clearOutput() {
+            const outputArea = document.getElementById('output-area');
+            outputArea.innerHTML = '<div class="output-placeholder">AI-generated content will appear here. Try entering a prompt above and clicking "Generate with AI" to see the magic happen!</div>';
+            showNotification('Output cleared', 'success');
+        }
+
+        function saveOutput() {
+            const outputArea = document.getElementById('output-area');
+            const resultContent = outputArea.querySelector('.result-text');
+            
+            if (!resultContent) {
+                showNotification('No content to save!', 'warning');
+                return;
+            }
+            
+            const content = resultContent.textContent;
+            savedResults.push({
+                content: content,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            });
+            
+            showNotification(`Result saved! (${savedResults.length} total saved)`, 'success');
+        }
+
+        function copyToClipboard(encodedContent) {
+            const content = atob(encodedContent);
+            navigator.clipboard.writeText(content).then(() => {
+                showNotification('Content copied to clipboard!', 'success');
+            }).catch(() => {
+                showNotification('Failed to copy content', 'error');
+            });
+        }
+
+        function downloadResult(encodedContent) {
+            const content = atob(encodedContent);
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai-result-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification('Result downloaded!', 'success');
+        }
+
+        function shareResult() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'AI Creative Studio Result',
+                    text: 'Check out this AI-generated content!',
+                    url: window.location.href
+                });
+            } else {
+                copyToClipboard(btoa(window.location.href));
+                showNotification('Link copied to clipboard!', 'success');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            // Add notification styles if not exists
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    .notification {
+                        position: fixed;
+                        top: 100px;
+                        right: 2rem;
+                        padding: 1rem 1.5rem;
+                        border-radius: 10px;
+                        color: white;
+                        font-weight: 500;
+                        z-index: 10000;
+                        animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-in 2.7s forwards;
+                        backdrop-filter: blur(20px);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                    }
+                    
+                    .notification.success {
+                        background: linear-gradient(135deg, rgba(74, 222, 128, 0.9), rgba(34, 197, 94, 0.9));
+                    }
+                    
+                    .notification.warning {
+                        background: linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.9));
+                    }
+                    
+                    .notification.error {
+                        background: linear-gradient(135deg, rgba(248, 113, 113, 0.9), rgba(239, 68, 68, 0.9));
+                    }
+                    
+                    .notification.info {
+                        background: linear-gradient(135deg, rgba(79, 172, 254, 0.9), rgba(59, 130, 246, 0.9));
+                    }
+                    
+                    @keyframes slideInRight {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                    
+                    @keyframes fadeOut {
+                        to {
+                            opacity: 0;
+                            transform: translateX(100%);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after animation
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        function animateStats() {
+            const stats = [
+                { id: 'content-generated', target: generatedCount, duration: 1000 },
+                { id: 'users-served', target: 1247, duration: 2000 },
+                { id: 'processing-time', target: 0.3, duration: 1500, isDecimal: true },
+                { id: 'satisfaction-rate', target: 98, duration: 1800 }
+            ];
+
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                if (!element) return;
+
+                let current = 0;
+                const increment = stat.target / (stat.duration / 16);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.target) {
+                        current = stat.target;
+                        clearInterval(timer);
+                    }
+                    
+                    if (stat.isDecimal) {
+                        element.textContent = current.toFixed(1);
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        }
+
+        function startAnimations() {
+            // Intersection Observer for fade-in animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // Observe feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Observe stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Advanced Features
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to generate
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                generateContent();
+            }
+            
+            // Ctrl/Cmd + K to clear
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                clearOutput();
+            }
+            
+            // Escape to clear focus
+            if (e.key === 'Escape') {
+                document.activeElement.blur();
+            }
+        });
+
+        // Auto-save functionality
+        let autoSaveTimer;
+        document.getElementById('user-prompt').addEventListener('input', function() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                // Auto-save draft to localStorage would go here
+                // Note: localStorage is not available in Claude artifacts
+                console.log('Auto-saving draft...');
+            }, 2000);
+        });
+
+        // Dynamic theme based on time
+        function updateThemeBasedOnTime() {
+            const hour = new Date().getHours();
+            const root = document.documentElement;
+            
+            if (hour >= 6 && hour < 18) {
+                // Day theme adjustments
+                root.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.15)');
+            } else {
+                // Night theme (default)
+                root.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.1)');
+            }
+        }
+
+        // Call theme update on load
+        updateThemeBasedOnTime();
+
+        // Performance monitoring
+        const performanceMetrics = {
+            startTime: Date.now(),
+            interactions: 0,
+            
+            trackInteraction() {
+                this.interactions++;
+                console.log(`User interactions: ${this.interactions}`);
+            },
+            
+            getSessionTime() {
+                return ((Date.now() - this.startTime) / 1000 / 60).toFixed(1);
+            }
+        };
+
+        // Track user interactions
+        document.addEventListener('click', () => performanceMetrics.trackInteraction());
+        document.addEventListener('keydown', () => performanceMetrics.trackInteraction());
+
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.length === konamiSequence.length && 
+                konamiCode.every((code, index) => code === konamiSequence[index])) {
+                showNotification('🎉 Easter egg found! Advanced AI mode unlocked!', 'success');
+                document.body.style.filter = 'hue-rotate(45deg)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 3000);
+            }
+        });
+
+        // Console welcome message
+        console.log(`
+    🚀 AI Creative Studio - Developer Console
+    =======================================
+    
+    Powered by Lovable.dev × Claude AI
+    
+    Available commands:
+    - performanceMetrics.getSessionTime() - Get session duration
+    - performanceMetrics.interactions - View interaction count
+    - savedResults - View saved AI results
+    - generatedCount - Total content generated
+    
+    Built for Awwwards Competition 2025
+        `);
+    </script>
+</body>
+</html>
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #232526 0%, #414345 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --error: #f87171;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-gradient);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            animation: float 20s infinite linear;
+            opacity: 0.1;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-delay: 2s; }
+        .shape:nth-child(3) { width: 100px; height: 100px; left: 30%; animation-delay: 4s; }
+        .shape:nth-child(4) { width: 120px; height: 120px; left: 40%; animation-delay: 6s; }
+        .shape:nth-child(5) { width: 90px; height: 90px; left: 50%; animation-delay: 8s; }
+        .shape:nth-child(6) { width: 70px; height: 70px; left: 60%; animation-delay: 10s; }
+        .shape:nth-child(7) { width: 110px; height: 110px; left: 70%; animation-delay: 12s; }
+        .shape:nth-child(8) { width: 95px; height: 95px; left: 80%; animation-delay: 14s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Interactive Demo Section */
+        .demo-section {
+            margin: 6rem 0;
+            text-align: center;
+        }
+
+        .demo-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .input-field, .textarea-field, .select-field {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus, .textarea-field:focus, .select-field:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.2);
+        }
+
+        .textarea-field {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .demo-button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .demo-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Output Area */
+        .output-area {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 200px;
+            text-align: left;
+            position: relative;
+        }
+
+        .output-placeholder {
+            color: var(--text-secondary);
+            font-style: italic;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(79, 172, 254, 0.3);
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 6rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 6rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .demo-container {
+                padding: 2rem;
+            }
+            
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">AI Creative Studio</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1>AI Creative Studio</h1>
+            <p>Experience the future of AI-powered creativity with Lovable.dev and Claude AI. Generate content, analyze data, and create stunning visuals with cutting-edge artificial intelligence.</p>
+            <a href="#demo" class="cta-button">Start Creating →</a>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features" id="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>AI Content Generation</h3>
+                <p>Generate high-quality text, stories, articles, and creative content using Claude AI's advanced language understanding and generation capabilities.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Data Analysis & Insights</h3>
+                <p>Upload and analyze complex datasets with AI-powered insights, visualizations, and comprehensive reports that reveal hidden patterns.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>Creative Writing Assistant</h3>
+                <p>Collaborate with AI to write poems, stories, screenplays, and other creative works with intelligent suggestions and improvements.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Smart Code Generation</h3>
+                <p>Generate, debug, and optimize code across multiple programming languages with AI assistance and best practice recommendations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Business Intelligence</h3>
+                <p>Transform raw business data into actionable insights with AI-powered analysis, forecasting, and strategic recommendations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Research Assistant</h3>
+                <p>Conduct comprehensive research on any topic with AI-powered web search, summarization, and citation management.</p>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section class="demo-section" id="demo">
+            <h2>Experience AI in Action</h2>
+            <div class="demo-container">
+                <div class="input-group">
+                    <label for="task-type">Choose AI Task:</label>
+                    <select id="task-type" class="select-field">
+                        <option value="content">Content Generation</option>
+                        <option value="analysis">Data Analysis</option>
+                        <option value="creative">Creative Writing</option>
+                        <option value="code">Code Generation</option>
+                        <option value="research">Research Assistant</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="user-prompt">Your Prompt:</label>
+                    <textarea id="user-prompt" class="textarea-field" placeholder="Describe what you'd like the AI to help you with..."></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="creativity-level">Creativity Level:</label>
+                    <input type="range" id="creativity-level" min="1" max="10" value="5" class="input-field">
+                    <span id="creativity-value">5</span>/10
+                </div>
+                
+                <div class="button-group">
+                    <button class="demo-button primary-btn" onclick="generateContent()">Generate with AI</button>
+                    <button class="demo-button secondary-btn" onclick="clearOutput()">Clear</button>
+                    <button class="demo-button secondary-btn" onclick="saveOutput()">Save Result</button>
+                </div>
+                
+                <div class="output-area" id="output-area">
+                    <div class="output-placeholder">
+                        AI-generated content will appear here. Try entering a prompt above and clicking "Generate with AI" to see the magic happen!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <span class="stat-number" id="content-generated">0</span>
+                <div class="stat-label">Content Pieces Generated</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="users-served">1,247</span>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="processing-time">0.3</span>
+                <div class="stat-label">Avg Processing Time (s)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="satisfaction-rate">98</span>
+                <div class="stat-label">Satisfaction Rate (%)</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://lovable.dev" target="_blank">Lovable.dev</a>
+                <a href="https://anthropic.com" target="_blank">Anthropic</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p>&copy; 2025 AI Creative Studio. Powered by Lovable.dev × Claude AI. Built for Awwwards Competition.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let generatedCount = 0;
+        let savedResults = [];
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            startAnimations();
+        });
+
+        function initializeApp() {
+            // Update creativity level display
+            const creativitySlider = document.getElementById('creativity-level');
+            const creativityValue = document.getElementById('creativity-value');
+            
+            creativitySlider.addEventListener('input', function() {
+                creativityValue.textContent = this.value;
+            });
+            
+            // Animate stats on load
+            animateStats();
+        }
+
+        function setupEventListeners() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Task type change handler
+            const taskSelect = document.getElementById('task-type');
+            taskSelect.addEventListener('change', function() {
+                updatePromptPlaceholder(this.value);
+            });
+        }
+
+        function updatePromptPlaceholder(taskType) {
+            const promptField = document.getElementById('user-prompt');
+            const placeholders = {
+                'content': 'e.g., "Write a blog post about sustainable technology trends"',
+                'analysis': 'e.g., "Analyze the sales data trends and provide insights"',
+                'creative': 'e.g., "Write a short sci-fi story about AI in 2050"',
+                'code': 'e.g., "Create a Python function to sort a list of dictionaries"',
+                'research': 'e.g., "Research the latest developments in quantum computing"'
+            };
+            promptField.placeholder = placeholders[taskType] || 'Describe what you\'d like the AI to help you with...';
+        }
+
+        async function generateContent() {
+            const taskType = document.getElementById('task-type').value;
+            const prompt = document.getElementById('user-prompt').value.trim();
+            const creativityLevel = document.getElementById('creativity-level').value;
+            const outputArea = document.getElementById('output-area');
+            const generateBtn = document.querySelector('.primary-btn');
+
+            if (!prompt) {
+                showNotification('Please enter a prompt first!', 'warning');
+                return;
+            }
+
+            // Show loading state
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating...';
+            outputArea.innerHTML = '<div class="loading-animation"><div class="spinner"></div></div>';
+
+            try {
+                // Simulate AI processing with realistic delay
+                await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+                
+                const result = await simulateAIGeneration(taskType, prompt, creativityLevel);
+                displayResult(result, taskType);
+                
+                // Update stats
+                generatedCount++;
+                document.getElementById('content-generated').textContent = generatedCount;
+                
+                showNotification('Content generated successfully!', 'success');
+                
+            } catch (error) {
+                outputArea.innerHTML = '<div class="output-placeholder" style="color: #f87171;">Error generating content. Please try again.</div>';
+                showNotification('Generation failed. Please try again.', 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate with AI';
+            }
+        }
+
+        async function simulateAIGeneration(taskType, prompt, creativityLevel) {
+            // Simulate different types of AI responses based on task type
+            const responses = {
+                'content': generateContentResponse(prompt, creativityLevel),
+                'analysis': generateAnalysisResponse(prompt, creativityLevel),
+                'creative': generateCreativeResponse(prompt, creativityLevel),
+                'code': generateCodeResponse(prompt, creativityLevel),
+                'research': generateResearchResponse(prompt, creativityLevel)
+            };
+
+            return responses[taskType] || responses['content'];
+        }
+
+        function generateContentResponse(prompt, creativity) {
+            const templates = [
+                `# AI-Generated Content\n\n**Based on your prompt:** "${prompt}"\n\n## Introduction\n\nThis AI-generated content demonstrates the advanced capabilities of Claude AI integrated with Lovable.dev's powerful platform. The combination creates a seamless user experience for content creation.\n\n## Key Points\n\n• **Intelligent Understanding**: Claude AI processes your intent with remarkable accuracy\n• **Creative Enhancement**: Creativity level ${creativity}/10 adds the perfect balance of innovation\n• **Professional Quality**: Output meets industry standards for ${prompt.includes('blog') ? 'blog writing' : 'content creation'}\n\n## Conclusion\n\nThis demonstration showcases how AI can augment human creativity while maintaining authenticity and relevance. The future of content creation is collaborative intelligence.\n\n*Generated in ${(Math.random() * 2 + 1).toFixed(1)} seconds with Claude AI*`,
+                
+                `# Professional Content Generation\n\n**Your Request:** ${prompt}\n**Creativity Setting:** ${creativity}/10\n\n## Executive Summary\n\nLeveraging advanced AI capabilities, this content addresses your specific requirements while maintaining professional standards and creative flair.\n\n## Generated Content\n\n${generateSampleContent(prompt)}\n\n## AI Insights\n\n✓ **Relevance Score**: 96%\n✓ **Readability**: Excellent\n✓ **SEO Optimization**: Included\n✓ **Tone Consistency**: Professional\n\n---\n*Powered by Lovable.dev × Claude AI*`
+            ];
+
+            return templates[Math.floor(Math.random() * templates.length)];
+        }
+
+        function generateAnalysisResponse(prompt, creativity) {
+            return `# Data Analysis Report\n\n**Analysis Request:** ${prompt}\n**Processing Complexity:** ${creativity}/10\n\n## Key Findings\n\n📊 **Data Overview**\n• Sample size: 1,247 records\n• Processing time: 0.3 seconds\n• Confidence level: 98%\n\n## Statistical Insights\n\n• **Trend Analysis**: Positive growth trajectory identified\n• **Correlation Strength**: 0.87 (Strong)\n• **Predictive Accuracy**: 94.2%\n• **Anomaly Detection**: 3 outliers identified\n\n## Recommendations\n\n1. **Short-term Actions**: Focus on high-performing segments\n2. **Long-term Strategy**: Invest in emerging opportunities\n3. **Risk Mitigation**: Monitor identified anomalies\n\n## Visualization Notes\n\n*Interactive charts and graphs would be generated here in a full implementation*\n\n---\n**Analysis completed by Claude AI via Lovable.dev platform**`;
+        }
+
+        function generateCreativeResponse(prompt, creativity) {
+            return `# Creative Writing Output\n\n**Creative Prompt:** "${prompt}"\n**Imagination Level:** ${creativity}/10\n\n---\n\n## Generated Story\n\nIn the year 2025, creativity and artificial intelligence danced together in perfect harmony. The AI Creative Studio had become more than just a tool—it was a partner in human imagination.\n\n*Sarah typed her prompt into the elegant interface, watching as the AI processed her words with the same care a master craftsman might handle precious materials. The response that emerged was not merely generated text, but a collaborative creation between human vision and artificial intelligence.*\n\n**"This is extraordinary,"** she whispered, watching her ideas transform into polished prose. The AI understood nuance, emotion, and the subtle art of storytelling in ways that surprised even its creators.\n\n## Character Development\n\n• **Protagonist**: Innovative creator seeking AI collaboration\n• **Setting**: Near-future creative workspace\n• **Theme**: Human-AI partnership in creativity\n• **Tone**: Optimistic and inspiring\n\n## Creative Elements\n\n✨ **Metaphorical Language**: Dance of creativity and intelligence\n🎭 **Emotional Resonance**: Wonder and discovery\n🚀 **Future Vision**: Collaborative human-AI relationships\n\n---\n*Crafted with creative AI assistance - Creativity level ${creativity}/10*`;
+        }
+
+        function generateCodeResponse(prompt, creativity) {
+            return `# AI Code Generation\n\n**Code Request:** ${prompt}\n**Innovation Level:** ${creativity}/10\n\n## Generated Code\n\n\`\`\`python\n# AI-Generated Python Solution\n# Optimized for performance and readability\n\ndef ai_powered_solution(data):\n    """\n    Advanced AI-generated function demonstrating\n    Claude AI's coding capabilities via Lovable.dev\n    """\n    \n    # Smart preprocessing\n    processed_data = []\n    for item in data:\n        if isinstance(item, dict):\n            # Intelligent key extraction\n            processed_data.append({\n                'value': item.get('value', 0),\n                'priority': item.get('priority', 1),\n                'timestamp': item.get('timestamp', 'now')\n            })\n    \n    # AI-optimized sorting algorithm\n    return sorted(processed_data, \n                 key=lambda x: (x['priority'], x['value']), \n                 reverse=True)\n\n# Usage example\nresult = ai_powered_solution(sample_data)\nprint(f"Processed {len(result)} items with AI optimization")\n\`\`\`\n\n## Code Analysis\n\n✅ **Quality Metrics**\n• Readability Score: 9.2/10\n• Performance: O(n log n)\n• Memory Efficiency: Optimized\n• Error Handling: Robust\n\n✅ **AI Enhancements**\n• Smart type checking\n• Defensive programming\n• Clear documentation\n• Pythonic patterns\n\n## Implementation Notes\n\n**Best Practices Applied:**\n- Function documentation\n- Error-resistant design\n- Efficient algorithms\n- Clean code principles\n\n---\n*Generated by Claude AI • Creativity Level ${creativity}/10*`;
